@@ -1,13 +1,13 @@
 // Retrieve tasks and nextId from localStorage
 // Retrieve tasks inputs from add task form
 const titleInput = $('#title');
-const dateInput = $('#date');
-const descriptionInput = $('#description');
+const dateInput = $('#due-date');
+const descriptionInput = $('#add-task-btn');
 
 function readTasksfromStorage () {
     let tasks = JSON.parse(localStorage.getItem('tasks'));
 
-  // ? If no projects were retrieved from localStorage, assign projects to a new empty array to push to later.
+  // an array if nothing was recived
   if (!tasks) {
     tasks = [];
   }
@@ -21,8 +21,7 @@ function saveTaskstoStorage(tasks) {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-    // create elements for the card using bootstrap classes
-    // 1. create element, 2. add attributes to element, 3. append element to page
+    // creating card elements
     const taskCard = $('<div>').addClass('card task-card draggable my-3').css('width', '18rem').attr('data-task-id', task.id);
     const cardHeader = $('<div>').addClass('card-header h5').text(task.title);
     const cardBody = $('<div>').addClass('card-body');
@@ -59,12 +58,13 @@ function createTaskCard(task) {
 function renderTaskList() {
     const tasks = readTasksfromStorage();
 
+
     // declare the droppable card lanes where tasks will render
-    const todoLane = $('#todo-cards');
+    const todos = $('#todo-cards');
     // todoLane.empty();
-    const inProgressLane = $('#in-progress-cards');
+    const inProgress = $('#in-progress-cards');
     // inProgressLane.empty();
-    const doneLane = $('#done-cards');
+    const finishLine = $('#done-cards');
     // doneLane.empty();
 
     // create a taskCard for each task in the taskList array
@@ -72,10 +72,8 @@ function renderTaskList() {
         if (task.status === 'to-do') {
             todoLane.append(createTaskCard(task));
         } else if (task.status === 'in-progress') {
-            inProgressLane.append(createTaskCard(task));
-        } else if (task.status === 'done') {
-            doneLane.append(createTaskCard(task));
-        }
+            inProgress.append(createTaskCard(task));
+       
     }
 
     // makes elements draggable that hold the 
@@ -92,7 +90,8 @@ function handleAddTask(event) {
     // declare form inputs as variables to gain their values
     const taskTitle = titleInput.val().trim();
     const taskDate = dateInput.val();
-    const taskDescription = descriptionInput.val().trim(); // yyyy-mm-dd format
+    const taskDescription = descriptionInput.val().trim(); 
+    // yyyy-mm-dd format
 
     // create an object out of the addTask form values
     const newTask = {
@@ -178,5 +177,4 @@ $(document).ready(function () {
     deleteBtn.on('click', handleDeleteTask)
 
 });
-
-        
+}
